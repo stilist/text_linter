@@ -1,10 +1,10 @@
 package rules
 
 import (
-	"log"
-	"testing"
 	"github.com/stilist/text_linter/internal/dictionary"
 	"github.com/stilist/text_linter/internal/linter"
+	"log"
+	"testing"
 )
 
 // @note This test is fragile and depends on the contents of
@@ -15,15 +15,15 @@ func TestRuleSTE11(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	type result struct{
+	type result struct {
 		in string
-		v bool
+		v  bool
 	}
 	expected := []result{
-		{ "test", true },
-		{ "TeSt", true },
-		{ "abaft", false },
-		{ "AbAfT", false },
+		{"test", true},
+		{"TeSt", true},
+		{"abaft", false},
+		{"AbAfT", false},
 	}
 
 	rs := []linter.Rule{
