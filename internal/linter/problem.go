@@ -6,7 +6,7 @@ import (
 
 type Problem struct {
 	Text        string
-	Position    Position
+	Position    *Position
 	Rule        *Rule
 	Replacement string
 }
