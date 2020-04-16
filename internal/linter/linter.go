@@ -23,8 +23,8 @@ type Linter struct {
 	document   *prose.Document
 	paragraphs []string
 	Rules      RuleSet
-	sentences  []Sentence
-	tokens     []Token
+	Sentences  []Sentence
+	Tokens     []Token
 }
 
 func NewLinter(text string, rs RuleSet) *Linter {
@@ -44,7 +44,7 @@ func (l *Linter) Initialize() {
 	l.document = doc
 	l.paragraphs = strings.Split(l.Text, "\n\n")
 
-	l.sentences = []Sentence{}
+	l.Sentences = []Sentence{}
 	cursor := 0
 	for _, ps := range doc.Sentences() {
 		offset := strings.Index(l.Text[cursor:], ps.Text)
@@ -55,10 +55,10 @@ func (l *Linter) Initialize() {
 			Text:     ps.Text,
 			Position: Position{start, cursor},
 		}
-		l.sentences = append(l.sentences, s)
+		l.Sentences = append(l.Sentences, s)
 	}
 
-	l.tokens = []Token{}
+	l.Tokens = []Token{}
 	cursor = 0
 	for _, pt := range doc.Tokens() {
 		offset := strings.Index(l.Text[cursor:], pt.Text)
@@ -71,26 +71,15 @@ func (l *Linter) Initialize() {
 			Label:    pt.Label,
 			Position: Position{start, cursor},
 		}
-		l.tokens = append(l.tokens, t)
+		l.Tokens = append(l.Tokens, t)
 	}
 }
 
 func (l *Linter) Lint() []Problem {
 	failures := []Problem{}
 	for _, r := range l.Rules {
-		passed, pos := r.Test(l)
-
-		if !passed {
-			for _, p := range pos {
-				problem := Problem{
-					Text:     l.Text,
-					Position: p,
-					Rule:     r,
-				}
-				failures = append(failures, problem)
-				problem.Describe()
-			}
-		}
+		problems := r.Match(l)
+		failures = append(failures, problems...)
 	}
 	return failures
 }

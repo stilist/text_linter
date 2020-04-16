@@ -20,11 +20,14 @@ var (
 	}
 )
 
-type testFunc func(l *Linter) (bool, []Position)
-type Rule struct {
+type RuleMetadata struct {
 	Description string
 	ID          string
 	Severity
-	Test testFunc
+}
+type matchFunc func(l *Linter) []Problem
+type Rule struct {
+	Metadata RuleMetadata
+	Match matchFunc
 }
 type RuleSet []Rule

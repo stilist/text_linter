@@ -7,14 +7,14 @@ import (
 type Problem struct {
 	Text string
 	Position
-	Rule
+	RuleMetadata
 	Replacement string
 }
 
 func (p *Problem) Describe() {
 	fmt.Printf("%s: %s @[%d,%d):\n-> %s\n",
-		p.Rule.ID,
-		p.Rule.Description,
+		p.RuleMetadata.ID,
+		p.RuleMetadata.Description,
 		p.Position.Start,
 		p.Position.End,
 		p.Text[p.Position.Start:p.Position.End])
