@@ -30,9 +30,9 @@ test:
 
 validate: lint vet tidy security test
 
-build-full: validate fmt build-static build
+build-full: validate build-static build
 
-build:
+build: fmt
 	@go build
 	@echo "[OK] Built binary"
 
