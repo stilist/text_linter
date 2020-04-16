@@ -7,7 +7,7 @@ import (
 
 type testcase struct {
 	in string
-	v  bool
+	c  int
 }
 type testcases []testcase
 
@@ -17,10 +17,12 @@ func runTestcases(t *testing.T, r linter.Rule, tcs testcases) {
 	for _, tc := range tcs {
 		l := linter.NewLinter(tc.in, rs)
 		ps := l.Lint()
-		if len(ps) > 0 && tc.v {
-			t.Errorf("Rule %s incorrectly rejected '%s'", r.Metadata.ID, tc.in)
-		} else if len(ps) == 0 && !tc.v {
-			t.Errorf("Rule %s incorrectly accepted '%s'", r.Metadata.ID, tc.in)
+		if len(ps) != tc.c {
+			t.Errorf("Rule %s found %d problem(s); should have been %d. Input: '%s'.",
+				r.Metadata.ID,
+				len(ps),
+				tc.c,
+				tc.in)
 		}
 	}
 }

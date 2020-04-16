@@ -6,12 +6,12 @@ import (
 
 func TestRuleSTE67(t *testing.T) {
 	tcs := testcases{
-		{"test", true},
-		{"Test.", true},
-		{"Test. Test. Test.", true},
-		{"Test. Test. Test. Test. Test. Test.", true},
-		{"Test. Test. Test. Test. Test. Test. Test.", false},
-		{"Test! Test. Test. Test. Test. Test. Test.", false},
+		{"test", 0},
+		{"Test.", 0},
+		{"Test. Test. Test.", 0},
+		{"Test. Test. Test. Test. Test. Test.", 0},
+		{"Test. Test. Test. Test. Test. Test. Test.", 1},
+		{"Test! Test. Test. Test. Test. Test. Test.", 1},
 	}
 	runTestcases(t, RuleSTE67, tcs)
 }
