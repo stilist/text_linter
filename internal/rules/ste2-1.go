@@ -18,8 +18,8 @@ var RuleSTE21 = linter.Rule{
 				clusLen += 1
 				if clusLen > 3 {
 					p := linter.Problem{
-						Text: l.Text,
-						Position: tok.Position,
+						Text:         l.Text,
+						Position:     tok.Position,
 						RuleMetadata: mdRuleSTE21,
 					}
 					ps = append(ps, p)

@@ -17,8 +17,8 @@ var RuleSTE11 = linter.Rule{
 			entry := dictionary.Default.Find(tok.Text)
 			if entry.Alternatives != nil {
 				p := linter.Problem{
-					Text: l.Text,
-					Position: tok.Position,
+					Text:         l.Text,
+					Position:     tok.Position,
 					RuleMetadata: mdRuleSTE11,
 				}
 				ps = append(ps, p)

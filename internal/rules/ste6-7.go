@@ -14,8 +14,8 @@ var RuleSTE67 = linter.Rule{
 	Match: func(l *linter.Linter) (ps []linter.Problem) {
 		if len(l.Sentences) > 6 {
 			p := linter.Problem{
-				Text: l.Text,
-				Position: l.Sentences[6].Position,
+				Text:         l.Text,
+				Position:     l.Sentences[6].Position,
 				RuleMetadata: mdRuleSTE67,
 			}
 			ps = append(ps, p)

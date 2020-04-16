@@ -28,6 +28,6 @@ type RuleMetadata struct {
 type matchFunc func(l *Linter) []Problem
 type Rule struct {
 	Metadata RuleMetadata
-	Match matchFunc
+	Match    matchFunc
 }
 type RuleSet []Rule
