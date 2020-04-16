@@ -2,7 +2,6 @@ package rules
 
 import (
 	"github.com/stilist/text_linter/internal/dictionary"
-	"github.com/stilist/text_linter/internal/linter"
 	"log"
 	"testing"
 )
@@ -15,27 +14,12 @@ func TestRuleSTE11(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	type result struct {
-		in string
-		v  bool
-	}
-	expected := []result{
+	tcs := testcases{
 		{"test", true},
 		{"TeSt", true},
 		{"abaft", false},
 		{"AbAfT", false},
 	}
 
-	r := RuleSTE11
-	rs := []linter.Rule{r}
-
-	for _, e := range expected {
-		l := linter.NewLinter(e.in, rs)
-		ps := l.Lint()
-		if len(ps) > 0 && e.v {
-			t.Errorf("Rule %s incorrectly rejected '%s'", r.Metadata.ID, e.in)
-		} else if len(ps) == 0 && !e.v {
-			t.Errorf("Rule %s incorrectly accepted '%s'", r.Metadata.ID, e.in)
-		}
-	}
+	runTestcases(t, RuleSTE11, tcs)
 }
