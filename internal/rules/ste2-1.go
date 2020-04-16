@@ -15,7 +15,7 @@ var RuleSTE21 = linter.Rule{
 		clusLen := 0
 		for _, tok := range l.Tokens {
 			if tok.Tag == "NN" {
-				clusLen += 1
+				clusLen++
 				if clusLen > 3 {
 					p := linter.Problem{
 						Text:         l.Text,
