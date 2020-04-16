@@ -26,17 +26,16 @@ func TestRuleSTE11(t *testing.T) {
 		{"AbAfT", false},
 	}
 
-	rs := []linter.Rule{
-		RuleSTE11,
-	}
+	r := RuleSTE11
+	rs := []linter.Rule{r}
 
 	for _, e := range expected {
 		l := linter.NewLinter(e.in, rs)
 		ps := l.Lint()
 		if len(ps) > 0 && e.v {
-			t.Errorf("Rule %s incorrectly rejected '%s'", RuleSTE11.Metadata.ID, e.in)
+			t.Errorf("Rule %s incorrectly rejected '%s'", r.Metadata.ID, e.in)
 		} else if len(ps) == 0 && !e.v {
-			t.Errorf("Rule %s incorrectly accepted '%s'", RuleSTE11.Metadata.ID, e.in)
+			t.Errorf("Rule %s incorrectly accepted '%s'", r.Metadata.ID, e.in)
 		}
 	}
 }
