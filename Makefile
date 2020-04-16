@@ -24,9 +24,15 @@ vet:
 	@go vet
 	@echo "[OK] Ran go vet"
 
-validate: lint vet tidy security
+test:
+	@go test -vet=off ./...
+	@echo "[OK] Tests passed"
 
-build: validate fmt build-static
+validate: lint vet tidy security test
+
+build-full: validate fmt build-static build
+
+build:
 	@go build
 	@echo "[OK] Built binary"
 
