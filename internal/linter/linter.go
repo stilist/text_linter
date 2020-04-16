@@ -75,7 +75,8 @@ func (l *Linter) Initialize() {
 	}
 }
 
-func (l *Linter) Lint() {
+func (l *Linter) Lint() []Problem {
+	failures := []Problem{}
 	for _, r := range l.rules {
 		passed, pos := r.Test(l)
 
@@ -86,8 +87,10 @@ func (l *Linter) Lint() {
 					Position: p,
 					Rule:     &r,
 				}
+				failures = append(failures, problem)
 				problem.Describe()
 			}
 		}
 	}
+	return failures
 }
