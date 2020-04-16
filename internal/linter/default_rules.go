@@ -29,6 +29,32 @@ var DefaultRules = RuleSet{
 		},
 	},
 	{
+		Description: "noun cluster too large",
+		ID:          "STE-2.1",
+		Severity:    SevError,
+		Test: func(l *Linter) (bool, Position) {
+			pos := Position{}
+
+			valid := true
+			clusLen := 0
+			// @todo Position -> []Position to handle multiple matches
+			for _, tok := range l.tokens {
+				if tok.Tag == "NN" {
+					clusLen += 1
+					if clusLen > 3 {
+						valid = false
+						pos = tok.Position
+						break
+					}
+				} else {
+					clusLen = 0
+				}
+			}
+
+			return valid, pos
+		},
+	},
+	{
 		Description: "too many sentences in paragraph",
 		ID:          "STE-6.7",
 		Severity:    SevError,

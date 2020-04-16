@@ -12,7 +12,9 @@ type Sentence struct {
 }
 
 type Token struct {
-	Text string
+	Text  string
+	Tag   string
+	Label string
 	Position
 }
 
@@ -65,6 +67,8 @@ func (l *Linter) Initialize() {
 
 		t := Token{
 			Text:     pt.Text,
+			Tag:      pt.Tag,
+			Label:    pt.Label,
 			Position: Position{start, cursor},
 		}
 		l.tokens = append(l.tokens, t)
