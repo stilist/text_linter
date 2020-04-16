@@ -9,19 +9,17 @@ var DefaultRules = RuleSet{
 		Description: "unapproved word",
 		ID:          "STE-1.1",
 		Severity:    SevWarn,
-		Test: func(l *Linter) (bool, Position) {
+		Test: func(l *Linter) (bool, []Position) {
 			valid := true
+			pos := []Position{}
 
-			pos := Position{}
-			// @todo Position -> []Position to handle multiple matches
 			for _, tok := range l.tokens {
 				entry := dictionary.Default.Find(tok.Text)
 				if entry.Alternatives != nil {
 					valid = false
 					if !valid {
-						pos = tok.Position
+						pos = append(pos, tok.Position)
 					}
-					break
 				}
 			}
 
@@ -32,19 +30,17 @@ var DefaultRules = RuleSet{
 		Description: "noun cluster too large",
 		ID:          "STE-2.1",
 		Severity:    SevError,
-		Test: func(l *Linter) (bool, Position) {
-			pos := Position{}
-
+		Test: func(l *Linter) (bool, []Position) {
 			valid := true
 			clusLen := 0
-			// @todo Position -> []Position to handle multiple matches
+			pos := []Position{}
+
 			for _, tok := range l.tokens {
 				if tok.Tag == "NN" {
 					clusLen += 1
 					if clusLen > 3 {
 						valid = false
-						pos = tok.Position
-						break
+						pos = append(pos, tok.Position)
 					}
 				} else {
 					clusLen = 0
@@ -58,11 +54,12 @@ var DefaultRules = RuleSet{
 		Description: "too many sentences in paragraph",
 		ID:          "STE-6.7",
 		Severity:    SevError,
-		Test: func(l *Linter) (bool, Position) {
+		Test: func(l *Linter) (bool, []Position) {
+			pos := []Position{}
+
 			valid := len(l.sentences) <= 6
-			pos := Position{}
 			if !valid {
-				pos = l.sentences[6].Position
+				pos = append(pos, l.sentences[6].Position)
 			}
 			return valid, pos
 		},

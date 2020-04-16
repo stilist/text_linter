@@ -8,7 +8,7 @@ const (
 	SevError
 )
 
-type testFunc func(l *Linter) (bool, Position)
+type testFunc func(l *Linter) (bool, []Position)
 type Rule struct {
 	Description string
 	ID          string

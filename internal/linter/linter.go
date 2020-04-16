@@ -80,12 +80,14 @@ func (l *Linter) Lint() {
 		passed, pos := r.Test(l)
 
 		if !passed {
-			problem := Problem{
-				Text:     l.Text,
-				Position: pos,
-				Rule:     &r,
+			for _, p := range pos {
+				problem := Problem{
+					Text:     l.Text,
+					Position: p,
+					Rule:     &r,
+				}
+				problem.Describe()
 			}
-			problem.Describe()
 		}
 	}
 }
