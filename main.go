@@ -1,0 +1,27 @@
+package main
+
+import (
+	"fmt"
+	"github.com/stilist/text_linter/internal/dictionary"
+	"github.com/stilist/text_linter/internal/linter"
+	"log"
+)
+
+func main() {
+	err := dictionary.LoadDefault()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	inputs := []string{}
+	for _, e := range dictionary.Default {
+		if len(e.Example) > 0 {
+			inputs = append(inputs, e.Example)
+		}
+	}
+	fmt.Printf("%d examples\n", len(inputs))
+	for _, s := range inputs {
+		l := linter.NewLinter(s, linter.DefaultRules)
+		l.Lint()
+	}
+}

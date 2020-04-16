@@ -1,0 +1,9 @@
+-[x] build data structure for rules
+-[ ] support user-provided rules
+-[x] parse input and classify (noun, verb...) ('NLP'?)
+-[x] evaluate input based on rules
+-[x] identify warnings and errors
+-[ ] recommendations
+-[ ] CLI
+-[ ] output formats -- plain text, JSON, color-coding
+-[ ] README
