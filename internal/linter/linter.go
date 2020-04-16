@@ -84,8 +84,8 @@ func (l *Linter) Lint() []Problem {
 			for _, p := range pos {
 				problem := Problem{
 					Text:     l.Text,
-					Position: &p,
-					Rule:     &r,
+					Position: p,
+					Rule:     r,
 				}
 				failures = append(failures, problem)
 				problem.Describe()
