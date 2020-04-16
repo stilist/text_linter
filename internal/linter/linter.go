@@ -22,7 +22,7 @@ type Linter struct {
 	Text       string
 	document   *prose.Document
 	paragraphs []string
-	rules      RuleSet
+	Rules      RuleSet
 	sentences  []Sentence
 	tokens     []Token
 }
@@ -30,7 +30,7 @@ type Linter struct {
 func NewLinter(text string, rs RuleSet) *Linter {
 	l := Linter{
 		Text:  text,
-		rules: rs,
+		Rules: rs,
 	}
 	l.Initialize()
 	return &l
@@ -77,7 +77,7 @@ func (l *Linter) Initialize() {
 
 func (l *Linter) Lint() []Problem {
 	failures := []Problem{}
-	for _, r := range l.rules {
+	for _, r := range l.Rules {
 		passed, pos := r.Test(l)
 
 		if !passed {
