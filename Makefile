@@ -25,7 +25,7 @@ vet:
 	@echo "[OK] Ran go vet"
 
 test:
-	@go test -vet=off ./...
+	@go test -vet=off -test.v ./...
 	@echo "[OK] Tests passed"
 
 validate: lint vet tidy security test
