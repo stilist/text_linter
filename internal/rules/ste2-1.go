@@ -5,7 +5,7 @@ import (
 )
 
 var mdRuleSTE21 = linter.RuleMetadata{
-	Name: "noun cluster is too large",
+	Name:        "noun cluster is too large",
 	Description: "Do not make noun clusters of more than three nouns.",
 	ID:          "STE-2.1",
 	Severity:    linter.SevError,

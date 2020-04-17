@@ -5,7 +5,7 @@ import (
 )
 
 var mdRuleSTE67 = linter.RuleMetadata{
-	Name: "paragraph lengths",
+	Name:        "paragraph lengths",
 	Description: "The maximum length of a paragraph is 6 sentences. Do not use one-sentence paragraphs more than once in every 10 paragraphs.",
 	ID:          "STE-6.7",
 	Severity:    linter.SevError,

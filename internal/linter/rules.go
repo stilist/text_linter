@@ -21,7 +21,7 @@ var (
 )
 
 type RuleMetadata struct {
-	Name string
+	Name        string
 	Description string
 	ID          string
 	Severity
