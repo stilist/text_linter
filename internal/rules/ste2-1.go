@@ -14,13 +14,17 @@ var RuleSTE21 = linter.Rule{
 	Metadata: mdRuleSTE21,
 	Match: func(l *linter.Linter) (ps []linter.Problem) {
 		clusLen := 0
+		start := 0
 		for _, tok := range l.Tokens {
 			if tok.Tag == "NN" {
+				if clusLen == 0 {
+					start = tok.Position.Start
+				}
 				clusLen++
 				if clusLen > 3 {
 					p := linter.Problem{
 						Text:         l.Text,
-						Position:     tok.Position,
+						Position:     linter.Position{start, tok.Position.End},
 						RuleMetadata: mdRuleSTE21,
 					}
 					ps = append(ps, p)
