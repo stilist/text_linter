@@ -46,7 +46,6 @@ func FromCSV(r io.Reader) (Dictionary, error) {
 	cr := csv.NewReader(br)
 	cr.FieldsPerRecord = len(csvHeader)
 	for {
-		// @todo skip header
 		row, err := cr.Read()
 		if err == io.EOF {
 			break
