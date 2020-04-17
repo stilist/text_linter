@@ -9,12 +9,13 @@ import (
 
 type Entry struct {
 	Approved bool
-	Text         string
+	Text     string
 	// @see https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
-	Tag          string
-	Meaning      string
-	Alternatives []string
-	Example      string
+	Tag              string
+	Meaning          string
+	Alternatives     []string
+	Examples         []string
+	NegativeExamples []string
 }
 type Dictionary map[string]Entry
 
@@ -24,6 +25,7 @@ var csvHeader = []string{
 	"meaning",
 	"alternatives",
 	"example",
+	"negative_example",
 }
 
 func FromCSV(r io.Reader) (Dictionary, error) {
@@ -49,14 +51,13 @@ func FromCSV(r io.Reader) (Dictionary, error) {
 
 		text := row[0]
 		e := Entry{
-			Approved: row[2] != "",
-			Text:     text,
-			Tag:      row[1],
-			Meaning:  row[2],
-			Example:  row[4],
-		}
-		if len(row[3]) > 0 {
-			e.Alternatives = strings.Split(row[3], ",")
+			Approved:         row[2] != "",
+			Text:             text,
+			Tag:              row[1],
+			Alternatives:     strings.Split(row[3], ","),
+			Meaning:          row[2],
+			Examples:         strings.Split(row[4], ". "),
+			NegativeExamples: strings.Split(row[5], ". "),
 		}
 
 		d[text] = e
