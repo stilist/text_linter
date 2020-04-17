@@ -6,6 +6,7 @@ import (
 )
 
 var mdRuleSTE811 = linter.RuleMetadata{
+	Name: "unapproved punctuation",
 	Description: "Do not use semicolons.",
 	ID:          "STE-8.11",
 	Severity:    linter.SevError,

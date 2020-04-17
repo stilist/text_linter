@@ -6,9 +6,13 @@ import (
 )
 
 var mdRuleSTE11 = linter.RuleMetadata{
-	Description: "unapproved word",
-	ID:          "STE-1.1",
-	Severity:    linter.SevWarn,
+	Name: "word is not approved",
+	Description: `Choose the words from:
+- Approved words in the Dictionary
+- Words that qualify as Technical Names (Refer to Rule STE-1.5)
+- Words that qualify as Technical Verbs (Refer to Rule STE-1.13).`,
+	ID:       "STE-1.1",
+	Severity: linter.SevWarn,
 }
 var RuleSTE11 = linter.Rule{
 	Metadata: mdRuleSTE11,
