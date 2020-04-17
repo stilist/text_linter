@@ -33,7 +33,7 @@ validate: lint vet tidy security test
 build-full: validate build
 
 build: fmt build-static
-	@go build
+	@go install ./...
 	@echo "[OK] Built binary"
 
 run: build
