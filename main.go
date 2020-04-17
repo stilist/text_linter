@@ -5,15 +5,9 @@ import (
 	"github.com/stilist/text_linter/internal/dictionary"
 	"github.com/stilist/text_linter/internal/linter"
 	"github.com/stilist/text_linter/internal/rules"
-	"log"
 )
 
 func main() {
-	err := dictionary.LoadDefault()
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	inputs := []string{}
 	for _, e := range dictionary.Default {
 		if len(e.Example) > 0 {

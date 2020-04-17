@@ -1,6 +1,7 @@
 package linter
 
 import (
+	"github.com/stilist/text_linter/internal/dictionary"
 	"gopkg.in/jdkato/prose.v2"
 	"log"
 	"strings"
@@ -37,6 +38,10 @@ func NewLinter(text string, rs RuleSet) *Linter {
 }
 
 func (l *Linter) Initialize() {
+	if err := dictionary.LoadDefault(); err != nil {
+		log.Fatal(err)
+	}
+
 	doc, err := prose.NewDocument(l.Text)
 	if err != nil {
 		log.Fatal(err)
