@@ -6,6 +6,7 @@ import (
 
 var Default linter.RuleSet = []linter.Rule{
 	RuleSTE11,
+	RuleSTE12,
 	RuleSTE21,
 	RuleSTE67,
 }

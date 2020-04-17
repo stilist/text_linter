@@ -17,6 +17,11 @@ type Entry struct {
 	Examples         []string
 	NegativeExamples []string
 }
+
+func (e *Entry) CheckTag(t string) bool {
+	return t == e.Tag || t != "!"+e.Tag
+}
+
 type Dictionary map[string]Entry
 
 var csvHeader = []string{
