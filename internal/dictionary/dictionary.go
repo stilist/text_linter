@@ -7,9 +7,8 @@ import (
 	"strings"
 )
 
-type word = string
 type Entry struct {
-	Text         word
+	Text         string
 	Tag          string
 	Meaning      string
 	Alternatives []string
@@ -63,7 +62,7 @@ func FromCSV(r io.Reader) (Dictionary, error) {
 	return d, nil
 }
 
-func (d Dictionary) Find(w word) (e Entry) {
+func (d Dictionary) Find(w string) (e Entry) {
 	lc := strings.ToLower(w)
 	return d[lc]
 }
