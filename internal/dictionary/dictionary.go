@@ -9,6 +9,7 @@ import (
 
 type Entry struct {
 	Text         string
+	// @see https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 	Tag          string
 	Meaning      string
 	Alternatives []string
