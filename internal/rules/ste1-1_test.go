@@ -15,10 +15,10 @@ func TestRuleSTE11(t *testing.T) {
 	}
 
 	tcs := testcases{
-		{"test", 0},
-		{"TeSt", 0},
-		{"abaft", 1},
-		{"AbAfT", 1},
+		{"test", 0, false},
+		{"TeSt", 0, false},
+		{"abaft", 1, false},
+		{"AbAfT", 1, false},
 	}
 	runTestcases(t, RuleSTE11, tcs)
 }
