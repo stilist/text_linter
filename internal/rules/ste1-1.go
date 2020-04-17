@@ -15,7 +15,7 @@ var RuleSTE11 = linter.Rule{
 	Match: func(l *linter.Linter) (ps []linter.Problem) {
 		for _, tok := range l.Tokens {
 			entry := dictionary.Default.Find(tok.Text)
-			if entry.Alternatives != nil {
+			if !entry.Approved && entry.Text != "" {
 				p := linter.Problem{
 					Text:         l.Text,
 					Position:     tok.Position,

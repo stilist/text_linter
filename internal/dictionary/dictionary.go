@@ -8,6 +8,7 @@ import (
 )
 
 type Entry struct {
+	Approved bool
 	Text         string
 	// @see https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html
 	Tag          string
@@ -48,10 +49,11 @@ func FromCSV(r io.Reader) (Dictionary, error) {
 
 		text := row[0]
 		e := Entry{
-			Text:    text,
-			Tag:     row[1],
-			Meaning: row[2],
-			Example: row[4],
+			Approved: row[2] != "",
+			Text:     text,
+			Tag:      row[1],
+			Meaning:  row[2],
+			Example:  row[4],
 		}
 		if len(row[3]) > 0 {
 			e.Alternatives = strings.Split(row[3], ",")
