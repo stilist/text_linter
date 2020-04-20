@@ -25,8 +25,11 @@ var RuleSTE811 = linter.Rule{
 			cursor = start + 1
 
 			p := linter.Problem{
-				Text:         ";",
-				Position:     linter.Position{offset, offset + 1},
+				Text: ";",
+				Position: linter.Position{
+					Start: offset,
+					End:   offset + 1,
+				},
 				RuleMetadata: mdRuleSTE811,
 			}
 			ps = append(ps, p)
