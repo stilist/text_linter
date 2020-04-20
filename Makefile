@@ -21,7 +21,7 @@ security:
 	@echo "[OK] Ran gosec"
 
 vet:
-	@go vet
+	@go vet ./...
 	@echo "[OK] Ran go vet"
 
 test:
