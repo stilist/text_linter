@@ -2,6 +2,7 @@ package linter
 
 import (
 	"fmt"
+	"os"
 )
 
 type Problem struct {
@@ -29,7 +30,7 @@ func (p *Problem) Describe() {
 		}
 	}
 
-	fmt.Printf("%s: %s @[%d,%d):\n-> %s\n\n",
+	fmt.Fprintf(os.Stderr, "%s: %s @[%d,%d):\n-> %s\n\n",
 		p.RuleMetadata.ID,
 		p.RuleMetadata.Name,
 		p.Position.Start,
