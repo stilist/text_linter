@@ -7,6 +7,7 @@ import (
 	"github.com/stilist/text_linter/internal/linter"
 	"github.com/stilist/text_linter/internal/rules"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -35,11 +36,11 @@ func readStdin() (string, error) {
 	return str.String(), nil
 }
 
-func readFile(filename string) (string, error) {
+func readFile(path string) (string, error) {
 	var str strings.Builder
 
 	// #nosec G304 -- specifically *want* to read arbitrary file paths
-	f, err := os.Open(filename)
+	f, err := os.Open(path)
 	if err != nil {
 		return str.String(), err
 	}
@@ -60,29 +61,66 @@ func readFile(filename string) (string, error) {
 	}
 }
 
-func main() {
-	flag.Parse()
-
-	var text string
-	var err error
-	if *filePtr == "-" {
-		text, err = readStdin()
-	} else {
-		text, err = readFile(*filePtr)
-	}
+func readFiles(path string) (texts []string, err error) {
+	p, err := os.Stat(path)
 	if err != nil {
-		log.Fatal(err)
+		return texts, err
 	}
 
+	switch mode := p.Mode(); {
+	case mode.IsDir():
+		fis, err := ioutil.ReadDir(path)
+		if err != nil {
+			return texts, err
+		}
+		for _, fi := range fis {
+			text, err := readFile(fi.Name())
+			if err != nil {
+				return texts, err
+			}
+			texts = append(texts, text)
+		}
+	case mode.IsRegular():
+		text, err := readFile(path)
+		if err != nil {
+			return texts, err
+		}
+		texts = append(texts, text)
+	}
+
+	return texts, nil
+}
+
+func lint(text string) {
 	l := linter.NewLinter(text, rules.Default)
-	ps := l.Lint()
-	if len(ps) > 0 {
-		fmt.Printf("%d error(s)\n", len(ps))
-		for _, p := range ps {
-			p.Describe()
+	probs := l.Lint()
+	if len(probs) > 0 {
+		fmt.Printf("%d error(s)\n", len(probs))
+		for _, prob := range probs {
+			prob.Describe()
 		}
 	} else {
 		lg := log.New(os.Stderr, "", 0)
 		lg.Println("No errors!")
+	}
+}
+
+func main() {
+	flag.Parse()
+
+	if *filePtr == "-" {
+		text, err := readStdin()
+		if err != nil {
+			log.Fatal(err)
+		}
+		lint(text)
+	} else {
+		texts, err := readFiles(*filePtr)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, text := range texts {
+			lint(text)
+		}
 	}
 }
