@@ -8,6 +8,7 @@ import (
 	"log"
 	"regexp"
 	"strings"
+	"sync"
 )
 
 type Entry struct {
@@ -45,16 +46,36 @@ var posLookup = map[string]string{
 	"v":   "VB",
 }
 
-func entriesFromRow(row []string) ([]Entry, error) {
-	es := []Entry{}
+var (
+	once             sync.Once
+	pos_re           *regexp.Regexp
+	note_re          = regexp.MustCompile(`\s+NOTE:\s+(.+)`)
+	approved_ks_re   = regexp.MustCompile(`^[A-Z,\s]+`)
+	unapproved_ks_re = regexp.MustCompile(`^[a-z,\s]+`)
+)
 
-	keyword := row[0]
+func prepare_pos_re() {
 	var pos_tags []string
 	for pos := range posLookup {
 		pos_tags = append(pos_tags, pos)
 	}
-	pos_re := regexp.MustCompile(`\s+\((` + strings.Join(pos_tags, "|") + `)\)`)
-	var pos string
+	pos_re = regexp.MustCompile(`\s+\((` + strings.Join(pos_tags, "|") + `)\)`)
+}
+
+func entriesFromRow(row []string) ([]Entry, error) {
+	es := []Entry{}
+
+	keyword := row[0]
+
+	var (
+		pos          string
+		note         string
+		meaning      string
+		alternatives []string
+		ks_re        *regexp.Regexp
+	)
+
+	once.Do(prepare_pos_re)
 	if matches := pos_re.FindStringSubmatch(keyword); matches != nil {
 		pos = matches[1]
 		keyword = strings.Replace(keyword, matches[0], "", 1)
@@ -62,8 +83,6 @@ func entriesFromRow(row []string) ([]Entry, error) {
 		fmt.Printf("Didn't find a PoS tag in '%s'.", keyword)
 	}
 
-	var note string
-	note_re := regexp.MustCompile(`\s+NOTE:\s+(.+)`)
 	if matches := note_re.FindStringSubmatch(keyword); matches != nil {
 		note = matches[1]
 		keyword = strings.Replace(keyword, matches[0], "", 1)
@@ -84,8 +103,6 @@ func entriesFromRow(row []string) ([]Entry, error) {
 			col2 = strings.Replace(col2, matches[0], "", 1)
 		}
 	}
-	var meaning string
-	var alternatives []string
 	if approved {
 		meaning = col2
 	} else {
@@ -95,7 +112,6 @@ func entriesFromRow(row []string) ([]Entry, error) {
 	examples := strings.Split(row[2], "\n\n")
 	negative_examples := strings.Split(row[3], "\n\n")
 
-	var ks_re *regexp.Regexp
 	// This regex strips out cross-referenced words.
 	//
 	// @example
@@ -104,14 +120,14 @@ func entriesFromRow(row []string) ([]Entry, error) {
 	//   "BAD (adj) (WORSE, WORST)" will match "BAD" (WORSE/WORST are listed
 	//   separately)
 	if approved {
-		ks_re = regexp.MustCompile(`^[A-Z,\s]+`)
+		ks_re = approved_ks_re
 	} else {
-		ks_re = regexp.MustCompile(`^[a-z,\s]+`)
+		ks_re = unapproved_ks_re
 	}
 	all_ks := ks_re.FindString(keyword)
 	ks := strings.Split(all_ks, ", ")
+	tag := posLookup[pos]
 	for i, k := range ks {
-		tag := posLookup[pos]
 		// Some verbs will have a list of three or four approved tenses. This
 		// tags the additional tenses.
 		//
